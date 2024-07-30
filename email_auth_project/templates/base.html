@@ -1,0 +1,25 @@
+<html>
+<head>
+	<title>Email Auth App by Kamal Sir</title>
+	<style>
+		*{font-size: 40px; font-family: Calibri,Arial;}
+		.nav{background-color: lightpink;}
+		.nav a{color: black; text-decoration:none; margin: 40px; }
+	</style>
+	</head>
+<body>
+<center>
+<div class = "nav">
+	{% if user.is_authenticated %}
+		<a href = "{% url 'ulogout' %}"> Logout </a>
+	{% else %}
+		<a href = "{% url 'ulogin' %}"> Login </a>
+		<a href = "{% url 'usignup' %}"> SignUp </a>
+		
+	{% endif %}
+</div>
+{% block content %}
+{% endblock %}
+</center>
+</body>
+</html>

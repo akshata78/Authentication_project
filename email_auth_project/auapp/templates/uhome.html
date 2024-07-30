@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fefefe;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;         }
+        h1 {
+            color: #e91e63;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #e91e63;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            background: #e91e63; 
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .section {
+            margin-bottom: 10px;
+            padding: 15px;
+            background: #fce4ec;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .section h2 {
+            color: #e91e63;
+            border-bottom: 1px solid #e91e63;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .table-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .table {
+            flex: 1 1 45%;
+            margin: 10px 10px 10px 0;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #333;
+        }
+        .table h3 {
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+        .table p {
+            margin: 10px 0;
+        }
+        .table p strong {
+            color: #333;
+        }
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .profile-details {
+            flex: 1;
+        }
+        .logout-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #e91e63;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .logout-button:hover {
+            background: #c2185b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            {% if profile %}
+                <div class="profile-picture">
+                    <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+                </div>
+            {% endif %}
+            <h1>Welcome, {{ user.first_name }}!</h1>
+        </div>
+
+        <div class="section">
+            <h2>Your Details</h2>
+            <div class="table-container">
+                <div class="table">
+                    <h3>Account Information</h3>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                </div>
+            </div>
+        </div>
+
+        {% if profile %}
+            <div class="section">
+                <h2>Profile Information</h2>
+                <div class="table-container">
+                    <div class="table">
+                        <h3>Address</h3>
+                        <p><strong>Address Line 1:</strong> {{ profile.address_line1 }}</p>
+                        <p><strong>City:</strong> {{ profile.city }}</p>
+                        <p><strong>State:</strong> {{ profile.state }}</p>
+                        <p><strong>Pincode:</strong> {{ profile.pincode }}</p>
+                    </div>
+                    <div class="table">
+                        <h3>User Type</h3>
+                        <p><strong>User Type:</strong> {{ profile.get_user_type_display }}</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="section">
+                <h2>No Profile Information Available</h2>
+            </div>
+        {% endif %}
+
+        <a href="{% url 'ulogout' %}" class="logout-button">Logout</a>
+    </div>
+</body>
+</html>

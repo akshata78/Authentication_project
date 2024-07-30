@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fefefe;
+            color: #333;
+        }
+        .signup-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 1px solid #333;
+        }
+        h1 {
+            color: #e91e63;
+            text-align: center;
+            border-bottom: 2px solid #e91e63;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .form-column {
+            flex: 1;
+            margin: 0 10px;
+            min-width: 250px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+        input, select, textarea {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            display: inline-block;
+            width: 100%;
+            padding: 10px 0;
+            background: #e91e63;
+            color: #ffffff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #c2185b;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const password = document.getElementById('id_password').value;
+            const confirmPassword = document.getElementById('id_confirm_password').value;
+            const errorMessageElem = document.querySelector('.error-message');
+
+            let isValid = true;
+            let errorMessage = '';
+
+            if (password !== confirmPassword) {
+                errorMessage = 'Passwords do not match.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert(errorMessage);
+
+                if (errorMessageElem) {
+                    errorMessageElem.innerText = errorMessage;
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        function showConfirmationMessage() {
+            const emailSent = document.getElementById('email-sent').value;
+            if (emailSent === 'true') {
+                alert('A confirmation email has been sent to your address.');
+            }
+        }
+    </script>
+</head>
+<body onload="showConfirmationMessage()">
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+
+        {% if msg %}
+            <p class="error-message">{{ msg }}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div class="form-section">
+                <div class="form-column">
+                    <label for="id_first_name">First Name:</label>
+                    {{ form.first_name }}<br>
+
+                    <label for="id_last_name">Last Name:</label>
+                    {{ form.last_name }}<br>
+
+                    <label for="id_username">Username:</label>
+                    {{ form.username }}<br>
+
+                    <label for="id_email">Email:</label>
+                    {{ form.email }}<br>
+
+                    <label for="id_password">Password:</label>
+                    {{ form.password }}<br>
+
+                    <label for="id_confirm_password">Confirm Password:</label>
+                    {{ form.confirm_password }}<br>
+                </div>
+                <div class="form-column">
+                    <label for="id_profile_picture">Profile Picture:</label>
+                    {{ form.profile_picture }}<br>
+
+                    <label for="id_address_line1">Address Line 1:</label>
+                    {{ form.address_line1 }}<br>
+
+                    <label for="id_city">City:</label>
+                    {{ form.city }}<br>
+
+                    <label for="id_state">State:</label>
+                    {{ form.state }}<br>
+
+                    <label for="id_pincode">Pincode:</label>
+                    {{ form.pincode }}<br>
+
+                    <label for="id_user_type">I am a:</label>
+                    {{ form.user_type }}<br>
+                </div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+            <input type="hidden" id="email-sent" value="{{ email_sent|default:'false' }}">
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}
